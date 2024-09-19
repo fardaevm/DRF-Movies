@@ -1,0 +1,34 @@
+services:
+  movies:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/drf
+    ports:
+      - 8009:8000
+    environment:
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DJANGO_DEBUG: ${DJANGO_DEBUG}
+    env_file:
+      - .env
+    depends_on:
+      - movies-db
+
+  movies-db:
+    image: postgres:16
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_USER: ${SQL_USER}
+      POSTGRES_PASSWORD: ${SQL_PASSWORD}
+      POSTGRES_DB: ${SQL_DATABASE}
+    env_file:
+      - .env
+
+volumes:
+  postgres_data:
+
+
+
+
+
